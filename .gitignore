@@ -100,3 +100,7 @@ ENV/
 
 # nodejs
 node_modules/
+
+djangosqs_backup/
+djangosqs_media/
+djangosqs_static/
