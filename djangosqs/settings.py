@@ -57,7 +57,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            os.path.join(BASE_DIR, "templates"),
+            os.path.join(BASE_DIR, "djangosqs", "templates"),
             os.path.join(BASE_DIR, "djangosqs", "apps", "website", "templates"),
         ],
         "APP_DIRS": True,
@@ -118,7 +118,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "djangosqs", "static"),)
 
 MEDIA_URL = "/media/"
 
@@ -133,11 +133,7 @@ DBBACKUP_STORAGE_OPTIONS = {
 DBBACKUP_CLEANUP_KEEP = 7
 
 DBBACKUP_CONNECTORS = {
-    "default": {
-        "EXCLUDE": [],
-        "SINGLE_TRANSACTION": True,
-        "DROP": True,
-    }
+    "default": {"EXCLUDE": [], "SINGLE_TRANSACTION": True, "DROP": True}
 }
 
 DBBACKUP_FILENAME_TEMPLATE = "{databasename}-{datetime}.{extension}"
