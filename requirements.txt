@@ -2,4 +2,7 @@ boto3==1.9.217
 Django==2.2.4
 django-anymail==6.1.0
 django-dbbackup==3.2.0
+pytest==5.1.1
+pytest-cov==2.7.1
+pytest-django==3.5.1
 reportlab==3.5.23
