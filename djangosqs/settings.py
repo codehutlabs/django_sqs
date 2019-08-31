@@ -139,9 +139,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "djangosqs_static")
 MEDIA_ROOT = os.path.join(BASE_DIR, "djangosqs_media")
 
 DBBACKUP_STORAGE = "django.core.files.storage.FileSystemStorage"
-DBBACKUP_STORAGE_OPTIONS = {
-    "location": os.path.join(BASE_DIR, "djangosqs_backup")
-}
+DBBACKUP_STORAGE_OPTIONS = {"location": os.path.join(BASE_DIR, "djangosqs_backup")}
 
 DBBACKUP_CLEANUP_KEEP = 7
 
