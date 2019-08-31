@@ -34,6 +34,10 @@ collectstatic:
 migrate:
 	@venv/bin/python manage.py migrate
 
+.PHONY: load
+load:
+	@venv/bin/python manage.py loaddata orderapizza.json
+
 .PHONY: run
 run:
 	@venv/bin/python manage.py runserver

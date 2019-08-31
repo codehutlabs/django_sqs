@@ -13,6 +13,7 @@ You need to have [virtualenv](https://virtualenv.pypa.io/) and Python 3.7 instal
     $ make
     $ make collectstatic
     $ make migrate
+    $ make load
     $ make run
 
 Or the traditional way:
@@ -22,6 +23,7 @@ Or the traditional way:
     (venv) $ pip install -r requirements.txt
     (venv) $ python manage.py collectstatic --noinput
     (venv) $ python manage.py migrate
+    (venv) $ python manage.py loaddata orderapizza.json
     (venv) $ python manage.py runserver
 
 Now point your browser to:

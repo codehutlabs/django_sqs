@@ -1,0 +1,131 @@
+[
+  {
+    "model": "website.topping",
+    "pk": 1,
+    "fields": {
+      "title": "tomatoes"
+    }
+  },
+  {
+    "model": "website.topping",
+    "pk": 2,
+    "fields": {
+      "title": "sliced mozzarella"
+    }
+  },
+  {
+    "model": "website.topping",
+    "pk": 3,
+    "fields": {
+      "title": "basil"
+    }
+  },
+  {
+    "model": "website.topping",
+    "pk": 4,
+    "fields": {
+      "title": "extra virgin olive oil"
+    }
+  },
+  {
+    "model": "website.topping",
+    "pk": 5,
+    "fields": {
+      "title": "tomato sauce"
+    }
+  },
+  {
+    "model": "website.topping",
+    "pk": 6,
+    "fields": {
+      "title": "mozzarella cheese"
+    }
+  },
+  {
+    "model": "website.topping",
+    "pk": 7,
+    "fields": {
+      "title": "pepperoni"
+    }
+  },
+  {
+    "model": "website.topping",
+    "pk": 8,
+    "fields": {
+      "title": "mushroom"
+    }
+  },
+  {
+    "model": "website.topping",
+    "pk": 9,
+    "fields": {
+      "title": "bits of tomato"
+    }
+  },
+  {
+    "model": "website.topping",
+    "pk": 10,
+    "fields": {
+      "title": "onion"
+    }
+  },
+  {
+    "model": "website.topping",
+    "pk": 11,
+    "fields": {
+      "title": "anchovies"
+    }
+  },
+  {
+    "model": "website.topping",
+    "pk": 12,
+    "fields": {
+      "title": "herbs"
+    }
+  },
+  {
+    "model": "website.pizza",
+    "pk": 1,
+    "fields": {
+      "title": "Neapolitan Pizza",
+      "image": "uploads/neapolitan.jpg",
+      "price": "12.95",
+      "toppings": [
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  },
+  {
+    "model": "website.pizza",
+    "pk": 2,
+    "fields": {
+      "title": "New York-Style Pizza",
+      "image": "uploads/newyorkstyle.jpg",
+      "price": "15.95",
+      "toppings": [
+        5,
+        6,
+        7,
+        8
+      ]
+    }
+  },
+  {
+    "model": "website.pizza",
+    "pk": 3,
+    "fields": {
+      "title": "Sicilian Pizza",
+      "image": "uploads/sicilian.jpg",
+      "price": "9.95",
+      "toppings": [
+        9,
+        10,
+        11,
+        12
+      ]
+    }
+  }
+]
