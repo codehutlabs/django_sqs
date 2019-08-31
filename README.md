@@ -10,6 +10,13 @@ Starting the Django server will bring up the Order a Pizza site.
 
 You need to have [virtualenv](https://virtualenv.pypa.io/) and Python 3.7 installed on your machine. Now run:
 
+    $ make
+    $ make collectstatic
+    $ make migrate
+    $ make run
+
+Or the traditional way:
+
     $ virtualenv -p python3.7 venv
     $ source venv/bin/activate
     (venv) $ pip install -r requirements.txt
