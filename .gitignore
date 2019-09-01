@@ -101,6 +101,13 @@ ENV/
 # nodejs
 node_modules/
 
+.pytest_cache
+.mypy_cache
+
+cov.xml
+htmltypecov/
+typecov/
+
 .installed
 
 djangosqs_backup/

@@ -1,5 +1,7 @@
 from django.urls import path
-from djangosqs.apps.website.views import HomeView, OrderView, OrdersView
+from djangosqs.apps.website.views import HomeView
+from djangosqs.apps.website.views import OrdersView
+from djangosqs.apps.website.views import OrderView
 
 app_name = "website"
 

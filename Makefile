@@ -13,7 +13,9 @@ install:
 .installed: requirements.txt djangosqs_backup djangosqs_media djangosqs_static
 	@echo "requirements.txt is newer than .installed, (re)installing"
 	@virtualenv -p python3.7 venv
-	@venv/bin/pip install -r requirements.txt
+	@venv/bin/pip install -r requirements-dev.txt
+	@venv/bin/pre-commit install -f --hook-type pre-commit
+	@venv/bin/pre-commit install -f --hook-type pre-push
 	@echo "This file is used by 'make' for keeping track of last install time. If requirements.txt is newer then this file (.installed) then all 'make *' commands that depend on '.installed' know they need to run." \
 		> .installed
 

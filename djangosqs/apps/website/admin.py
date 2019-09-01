@@ -1,6 +1,7 @@
 from django.contrib import admin
-
-from djangosqs.apps.website.models import Topping, Pizza, Order
+from djangosqs.apps.website.models import Order
+from djangosqs.apps.website.models import Pizza
+from djangosqs.apps.website.models import Topping
 
 
 class ToppingAdmin(admin.ModelAdmin):

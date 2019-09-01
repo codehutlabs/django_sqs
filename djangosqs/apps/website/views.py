@@ -1,8 +1,9 @@
-from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from djangosqs.apps.website.models import Pizza, Order
+from django.views.generic import TemplateView
 from djangosqs.apps.website.forms import OrderForm
+from djangosqs.apps.website.models import Order
+from djangosqs.apps.website.models import Pizza
 from djangosqs.apps.website.sqs import Sqs
 
 import datetime

@@ -1,6 +1,6 @@
 from django import forms
-
-from djangosqs.apps.website.models import Pizza, Order
+from djangosqs.apps.website.models import Order
+from djangosqs.apps.website.models import Pizza
 
 
 class RequestForm(forms.ModelForm):

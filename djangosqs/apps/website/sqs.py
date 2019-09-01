@@ -1,9 +1,10 @@
-from django.core.mail import EmailMessage
-from smtplib import SMTPException
 from anymail.exceptions import AnymailError
-
-from djangosqs.settings import MICRO_CONFIG, DEFAULT_FROM_EMAIL, TEMPLATE_ID
+from django.core.mail import EmailMessage
 from djangosqs.apps.website.pdf import Pdf
+from djangosqs.settings import DEFAULT_FROM_EMAIL
+from djangosqs.settings import MICRO_CONFIG
+from djangosqs.settings import TEMPLATE_ID
+from smtplib import SMTPException
 
 import boto3
 import json
