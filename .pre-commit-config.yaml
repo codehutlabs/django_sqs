@@ -40,8 +40,8 @@
         language: system
         stages: [push]
 
-#    -   id: mypy
-#        name: mypy
-#        entry: venv/bin/mypy
-#        language: system
-#        types: [python]
+    -   id: mypy
+        name: mypy
+        entry: venv/bin/mypy
+        language: system
+        types: [python]

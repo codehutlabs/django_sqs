@@ -112,10 +112,10 @@ class Sqs:
 
         to = message["to"]
         notification_mail = EmailMessage(
-            to=[to], from_email=DEFAULT_FROM_EMAIL, subject=None, body=None
+            to=[to], from_email=DEFAULT_FROM_EMAIL, subject="", body=""
         )
-        notification_mail.template_id = self.template_id
-        notification_mail.merge_global_data = message
+        notification_mail.template_id = self.template_id  # type: ignore
+        notification_mail.merge_global_data = message  # type: ignore
 
         try:
             notification_mail.send()
