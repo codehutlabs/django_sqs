@@ -1,14 +1,13 @@
-from anymail.exceptions import AnymailError
-from django.core.mail import EmailMessage
 from djangosqs.apps.website.pdf import Pdf
+from djangosqs.apps.website.postmark import Postmark
 from djangosqs.settings import DEFAULT_FROM_EMAIL
 from djangosqs.settings import MICRO_CONFIG
 from djangosqs.settings import TEMPLATE_ID
-from smtplib import SMTPException
 
 import boto3
 import json
 import time
+import typing as t
 
 
 class Sqs:
@@ -53,7 +52,9 @@ class Sqs:
     def get_queue(self):
         return self.queue
 
-    def send_message(self, message_body):
+    def send_message(
+        self, message_body: t.Dict[str, t.Union[str, t.Dict[str, str]]]
+    ) -> t.Dict[str, t.Union[str, t.Dict[str, t.Union[int, str, t.Dict[str, str]]]]]:
 
         body = json.dumps(message_body, sort_keys=True)
 
@@ -93,36 +94,20 @@ class Sqs:
 
         time.sleep(self.sleep_seconds)
 
-    def process_message(self, message):
+    def process_message(self, message: dict) -> bool:
 
         pdf = Pdf()
 
-        valid = "gov.si" not in message["to"]
-        success = False
+        message["action_url"] = pdf.receipt(message)
 
-        if valid:
-            message["action_url"] = pdf.receipt(message)
-            success = self.send_notification(message)
-
-        return success
-
-    def send_notification(self, message):
-
-        success = False
-
-        to = message["to"]
-        notification_mail = EmailMessage(
-            to=[to], from_email=DEFAULT_FROM_EMAIL, subject="", body=""
+        postmark = Postmark(
+            subject="",
+            body="",
+            from_email=DEFAULT_FROM_EMAIL,
+            to=[message["to"]],
+            template_id=self.template_id,
+            data=message,
         )
-        notification_mail.template_id = self.template_id  # type: ignore
-        notification_mail.merge_global_data = message  # type: ignore
+        num_sent = postmark.send()
 
-        try:
-            notification_mail.send()
-            success = True
-        except AnymailError as e:
-            print("AnymailError: There was an error sending an email.", e)
-        except SMTPException as e:
-            print("SMTPException: There was an error sending an email.", e)
-
-        return success
+        return num_sent > 0
