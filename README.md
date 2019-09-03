@@ -21,6 +21,8 @@ Or the traditional way:
     $ virtualenv -p python3.7 venv
     $ source venv/bin/activate
     (venv) $ pip install -r requirements.txt
+    mkdir djangosqs_media/receipt
+    mkdir djangosqs_media/uploads
     (venv) $ python manage.py collectstatic --noinput
     (venv) $ python manage.py migrate
     (venv) $ python manage.py loaddata orderapizza.json

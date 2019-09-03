@@ -24,6 +24,8 @@ djangosqs_backup:
 
 djangosqs_media:
 	@mkdir djangosqs_media
+	@mkdir djangosqs_media/uploads
+	@mkdir djangosqs_media/receipt
 
 djangosqs_static:
 	@mkdir djangosqs_static
