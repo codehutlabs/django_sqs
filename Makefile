@@ -18,6 +18,7 @@ install:
 	@venv/bin/pre-commit install -f --hook-type pre-push
 	@echo "This file is used by 'make' for keeping track of last install time. If requirements.txt is newer then this file (.installed) then all 'make *' commands that depend on '.installed' know they need to run." \
 		> .installed
+	@cp djangosqs/local_settings.txt djangosqs/local_settings.py
 
 djangosqs_backup:
 	@mkdir djangosqs_backup
@@ -52,3 +53,6 @@ run:
 clean:
 	@rm -rf venv/ htmlcov/
 	@rm -f .installed .coverage
+
+.PHONY: test
+test: djangosqs_local_settings

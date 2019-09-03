@@ -21,9 +21,15 @@ Or the traditional way:
     $ virtualenv -p python3.7 venv
     $ source venv/bin/activate
     (venv) $ pip install -r requirements.txt
-    mkdir djangosqs_media/receipt
-    mkdir djangosqs_media/uploads
-    rsync -rupE djangosqs/static/images/ djangosqs_media/uploads/
+    (venv) $ pre-commit install -f --hook-type pre-commit
+    (venv) $ pre-commit install -f --hook-type pre-push
+    (venv) $ mkdir djangosqs_backup
+    (venv) $ mkdir djangosqs_media
+    (venv) $ mkdir djangosqs_static
+    (venv) $ mkdir djangosqs_media/receipt
+    (venv) $ mkdir djangosqs_media/uploads
+    (venv) $ cp djangosqs/local_settings.txt djangosqs/local_settings.py
+    (venv) $ rsync -rupE djangosqs/static/images/ djangosqs_media/uploads/
     (venv) $ python manage.py collectstatic --noinput
     (venv) $ python manage.py migrate
     (venv) $ python manage.py loaddata orderapizza.json
