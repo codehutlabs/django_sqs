@@ -53,6 +53,3 @@ run:
 clean:
 	@rm -rf venv/ htmlcov/
 	@rm -f .installed .coverage
-
-.PHONY: test
-test: djangosqs_local_settings
