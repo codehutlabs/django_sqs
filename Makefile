@@ -41,6 +41,8 @@ migrate:
 .PHONY: load
 load:
 	@venv/bin/python manage.py loaddata orderapizza.json
+	@echo Copying images to media folder
+	@rsync -rupE djangosqs/static/images/ djangosqs_media/uploads/
 
 .PHONY: run
 run:

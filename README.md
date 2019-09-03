@@ -23,10 +23,12 @@ Or the traditional way:
     (venv) $ pip install -r requirements.txt
     mkdir djangosqs_media/receipt
     mkdir djangosqs_media/uploads
+    rsync -rupE djangosqs/static/images/ djangosqs_media/uploads/
     (venv) $ python manage.py collectstatic --noinput
     (venv) $ python manage.py migrate
     (venv) $ python manage.py loaddata orderapizza.json
     (venv) $ python manage.py runserver
 
 Now point your browser to:
- * http://localhost:8000/ -> DjangoSQS frontend app
+
+- http://localhost:8000/ -> DjangoSQS frontend app
