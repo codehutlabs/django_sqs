@@ -5,6 +5,7 @@ from djangosqs.apps.website.forms import OrderForm
 from djangosqs.apps.website.models import Order
 from djangosqs.apps.website.models import Pizza
 from djangosqs.apps.website.sqs import Sqs
+from djangosqs.settings import MICRO_CONFIG
 
 import datetime
 
@@ -72,7 +73,15 @@ class OrderView(TemplateView):
                 "action_url": "",
             }
 
-            sqs = Sqs()
+            region_name = str(MICRO_CONFIG["REGION_NAME"])
+            queue_name = str(MICRO_CONFIG["STANDARD_QUEUE"])
+            dl_queue_name = str(MICRO_CONFIG["DL_QUEUE"])
+
+            sqs = Sqs(
+                region_name=region_name,
+                queue_name=queue_name,
+                dl_queue_name=dl_queue_name,
+            )
             sqs.send_message(message_body)
 
             return HttpResponseRedirect(reverse("website:orders"))
