@@ -15,46 +15,52 @@ class Sqs:
         queue_name: str,
         dl_queue_name: str,
         template_id: str = "",
-        delay_seconds: int = 0,
-        visibility_timeout: int = 20,
-        max_receive_count: int = 5,
-        wait_seconds: int = 20,
+        delay_seconds: str = "0",
+        visibility_timeout: str = "20",
+        max_receive_count: str = "5",
+        wait_seconds: str = "20",
         sleep_seconds: int = 5,
     ) -> None:
+        self.region_name = region_name
+        self.queue_name = queue_name
+        self.dl_queue_name = dl_queue_name
+        self.template_id = template_id
         self.delay_seconds = delay_seconds
+        self.visibility_timeout = visibility_timeout
+        self.max_receive_count = max_receive_count
         self.wait_seconds = wait_seconds
         self.sleep_seconds = sleep_seconds
-        self.visibility_timeout = visibility_timeout
-        self.template_id = template_id
 
-        sqs = boto3.resource("sqs", region_name=region_name)
+        sqs = boto3.resource("sqs", region_name=self.region_name)
 
-        dead_letter_queue_attributes = {"DelaySeconds": str(delay_seconds)}
+        dl_queue_attributes = {"DelaySeconds": self.delay_seconds}
 
-        sqs.create_queue(
-            QueueName=dl_queue_name, Attributes=dead_letter_queue_attributes
-        )
+        sqs.create_queue(QueueName=self.dl_queue_name, Attributes=dl_queue_attributes)
 
-        queue_dead_letter = sqs.get_queue_by_name(QueueName=dl_queue_name)
-        queue_dead_letter_arn = queue_dead_letter.attributes["QueueArn"]
+        dl_queue = sqs.get_queue_by_name(QueueName=self.dl_queue_name)
+        dl_queue_arn = dl_queue.attributes["QueueArn"]
 
         redrive_policy = {
-            "deadLetterTargetArn": queue_dead_letter_arn,
-            "maxReceiveCount": str(max_receive_count),
+            "deadLetterTargetArn": dl_queue_arn,
+            "maxReceiveCount": self.max_receive_count,
         }
-        standard_queue_attributes = {
-            "DelaySeconds": str(delay_seconds),
-            "ReceiveMessageWaitTimeSeconds": str(wait_seconds),
+        queue_attributes = {
+            "DelaySeconds": self.delay_seconds,
+            "ReceiveMessageWaitTimeSeconds": self.wait_seconds,
             "RedrivePolicy": json.dumps(redrive_policy),
         }
 
         self.queue = sqs.create_queue(
-            QueueName=queue_name, Attributes=standard_queue_attributes
+            QueueName=self.queue_name, Attributes=queue_attributes
         )
-        self.client = boto3.client("sqs", region_name=region_name)
+
+        self.client = boto3.client("sqs", region_name=self.region_name)
 
     def get_queue(self):
         return self.queue
+
+    def get_client(self):
+        return self.client
 
     def send_message(
         self, message_body: t.Dict[str, t.Union[str, t.Dict[str, str]]]
@@ -68,7 +74,7 @@ class Sqs:
 
         return response
 
-    def process_queue(self):
+    def process_queue(self) -> None:
 
         response = self.client.receive_message(
             QueueUrl=self.queue.url,
