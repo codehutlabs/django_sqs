@@ -1,8 +1,6 @@
 from djangosqs.apps.website.pdf import Pdf
 from djangosqs.apps.website.postmark import Postmark
 from djangosqs.settings import DEFAULT_FROM_EMAIL
-from djangosqs.settings import MICRO_CONFIG
-from djangosqs.settings import TEMPLATE_ID
 
 import boto3
 import json
@@ -11,46 +9,60 @@ import typing as t
 
 
 class Sqs:
-    def __init__(self):
-        self.region_name = MICRO_CONFIG["REGION_NAME"]
-        self.queue_name = MICRO_CONFIG["STANDARD_QUEUE"]
-        self.dl_queue_name = MICRO_CONFIG["DL_QUEUE"]
-        self.delay_seconds = MICRO_CONFIG["DELAY_SECONDS"]
-        self.visibility_timeout = MICRO_CONFIG["VISIBILITY_TIMEOUT"]
-        self.max_receive_count = MICRO_CONFIG["MAX_RECEIVE_COUNT"]
-        self.wait_seconds = MICRO_CONFIG["WAIT_TIME_SECONDS"]
-        self.sleep_seconds = MICRO_CONFIG["SLEEP_SECONDS"]
-
-        self.template_id = TEMPLATE_ID
+    def __init__(
+        self,
+        region_name: str,
+        queue_name: str,
+        dl_queue_name: str,
+        template_id: str = "",
+        delay_seconds: int = 0,
+        visibility_timeout: int = 20,
+        max_receive_count: int = 5,
+        wait_seconds: int = 20,
+        sleep_seconds: int = 5,
+    ) -> None:
+        self.region_name = region_name
+        self.queue_name = queue_name
+        self.dl_queue_name = dl_queue_name
+        self.template_id = template_id
+        self.delay_seconds = delay_seconds
+        self.delay_seconds_str = str(delay_seconds)
+        self.visibility_timeout = visibility_timeout
+        self.max_receive_count = max_receive_count
+        self.wait_seconds = wait_seconds
+        self.wait_seconds_str = str(wait_seconds)
+        self.sleep_seconds = sleep_seconds
 
         sqs = boto3.resource("sqs", region_name=self.region_name)
 
-        dead_letter_queue_attributes = {"DelaySeconds": str(self.delay_seconds)}
+        dl_queue_attributes = {"DelaySeconds": self.delay_seconds_str}
 
-        sqs.create_queue(
-            QueueName=self.dl_queue_name, Attributes=dead_letter_queue_attributes
-        )
+        sqs.create_queue(QueueName=self.dl_queue_name, Attributes=dl_queue_attributes)
 
-        queue_dead_letter = sqs.get_queue_by_name(QueueName=self.dl_queue_name)
-        queue_dead_letter_arn = queue_dead_letter.attributes["QueueArn"]
+        dl_queue = sqs.get_queue_by_name(QueueName=self.dl_queue_name)
+        dl_queue_arn = dl_queue.attributes["QueueArn"]
 
         redrive_policy = {
-            "deadLetterTargetArn": queue_dead_letter_arn,
-            "maxReceiveCount": str(self.max_receive_count),
+            "deadLetterTargetArn": dl_queue_arn,
+            "maxReceiveCount": self.max_receive_count,
         }
-        standard_queue_attributes = {
-            "DelaySeconds": str(self.delay_seconds),
-            "ReceiveMessageWaitTimeSeconds": str(self.wait_seconds),
+        queue_attributes = {
+            "DelaySeconds": self.delay_seconds_str,
+            "ReceiveMessageWaitTimeSeconds": self.wait_seconds_str,
             "RedrivePolicy": json.dumps(redrive_policy),
         }
 
         self.queue = sqs.create_queue(
-            QueueName=self.queue_name, Attributes=standard_queue_attributes
+            QueueName=self.queue_name, Attributes=queue_attributes
         )
+
         self.client = boto3.client("sqs", region_name=self.region_name)
 
     def get_queue(self):
         return self.queue
+
+    def get_client(self):
+        return self.client
 
     def send_message(
         self, message_body: t.Dict[str, t.Union[str, t.Dict[str, str]]]
@@ -64,7 +76,7 @@ class Sqs:
 
         return response
 
-    def process_queue(self):
+    def process_queue(self) -> None:
 
         response = self.client.receive_message(
             QueueUrl=self.queue.url,

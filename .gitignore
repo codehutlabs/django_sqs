@@ -113,3 +113,7 @@ typecov/
 djangosqs_backup/
 djangosqs_media/
 djangosqs_static/
+
+# Mac OS X custom attribute files
+.DS_Store
+.vscode/

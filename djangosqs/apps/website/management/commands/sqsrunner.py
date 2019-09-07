@@ -1,5 +1,7 @@
 from django.core.management.base import BaseCommand
 from djangosqs.apps.website.sqs import Sqs
+from djangosqs.settings import MICRO_CONFIG
+from djangosqs.settings import TEMPLATE_ID
 
 
 class Command(BaseCommand):
@@ -9,7 +11,16 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         print("========================")
-        sqs = Sqs()
+        region_name = str(MICRO_CONFIG["REGION_NAME"])
+        queue_name = str(MICRO_CONFIG["STANDARD_QUEUE"])
+        dl_queue_name = str(MICRO_CONFIG["DL_QUEUE"])
+
+        sqs = Sqs(
+            region_name=region_name,
+            queue_name=queue_name,
+            dl_queue_name=dl_queue_name,
+            template_id=TEMPLATE_ID,
+        )
 
         while True:
             sqs.process_queue()

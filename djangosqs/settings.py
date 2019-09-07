@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
+from typing import List
 
 import os
 
@@ -25,7 +26,7 @@ SECRET_KEY = "!bhz75uuiy1fb5q!(h3jx6w-9&_+)m_c#l2^%*n-7^b9&==4y%"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]  # type: List[str]
 
 
 # Application definition
@@ -168,6 +169,6 @@ DEFAULT_FROM_EMAIL = ""
 TEMPLATE_ID = ""
 
 try:
-    from djangosqs.local_settings import *
+    from djangosqs.local_settings import *  # noqa: F401,F403
 except ImportError:
     pass
