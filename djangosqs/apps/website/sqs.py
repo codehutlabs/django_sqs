@@ -1,6 +1,7 @@
 from djangosqs.apps.website.pdf import Pdf
 from djangosqs.apps.website.postmark import Postmark
 from djangosqs.settings import DEFAULT_FROM_EMAIL
+from djangosqs.settings import MEDIA_ROOT
 
 import boto3
 import json
@@ -110,7 +111,18 @@ class Sqs:
 
         pdf = Pdf()
 
-        message["action_url"] = pdf.receipt(message)
+        file_name: str = pdf.receipt(message)
+        message["action_url"] = pdf.receipt_url
+
+        file_path = "{}/{}".format(MEDIA_ROOT, file_name)
+
+        attachments = []  # start with an empty list
+
+        # create the attachment triple for this filename
+        content = open(file_path, "rb").read()
+        attachment = ("Receipt", content, "application/pdf")
+        # add the attachment to the list
+        attachments.append(attachment)
 
         postmark = Postmark(
             subject="",
@@ -119,6 +131,7 @@ class Sqs:
             to=[message["to"]],
             template_id=self.template_id,
             data=message,
+            attachments=attachments,
         )
         num_sent = postmark.send()
 

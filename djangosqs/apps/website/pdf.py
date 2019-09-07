@@ -12,16 +12,18 @@ from reportlab.platypus import SimpleDocTemplate
 from reportlab.platypus import Spacer
 
 import hashlib
+import typing as t
 
 
 class Pdf:
-    receipt_url = None
+    file_name: t.Optional[str] = None
+    receipt_url: t.Optional[str] = None
 
-    def __init__(self):
-        font = "{}/fonts/{}".format(settings.STATIC_ROOT, "RobotoSlab-Regular.ttf")
+    def __init__(self) -> None:
+        font: str = "{}/fonts/{}".format(settings.STATIC_ROOT, "RobotoSlab-Regular.ttf")
         pdfmetrics.registerFont(TTFont("roboto", font))
 
-    def receipt(self, message):
+    def receipt(self, message: t.Dict[str, str]) -> str:
 
         receipt = []
 
@@ -83,6 +85,7 @@ class Pdf:
         )
         doc.build(receipt)
 
+        self.file_name = file_name
         self.receipt_url = "http://127.0.0.1:8000/media/{}".format(file_name)
 
-        return self.receipt_url
+        return self.file_name
