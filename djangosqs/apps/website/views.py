@@ -6,6 +6,7 @@ from djangosqs.apps.website.models import Order
 from djangosqs.apps.website.models import Pizza
 from djangosqs.apps.website.sqs import Sqs
 from djangosqs.settings import MICRO_CONFIG
+from djangosqs.settings import TEMPLATE_ID
 
 import datetime
 
@@ -81,6 +82,7 @@ class OrderView(TemplateView):
                 region_name=region_name,
                 queue_name=queue_name,
                 dl_queue_name=dl_queue_name,
+                template_id=TEMPLATE_ID,
             )
             sqs.send_message(message_body)
 
