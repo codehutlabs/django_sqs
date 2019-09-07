@@ -25,16 +25,17 @@ class Sqs:
         self.queue_name = queue_name
         self.dl_queue_name = dl_queue_name
         self.template_id = template_id
-        self.delay_seconds = str(delay_seconds)
+        self.delay_seconds = delay_seconds
+        self.delay_seconds_str = str(delay_seconds)
         self.visibility_timeout = visibility_timeout
         self.max_receive_count = max_receive_count
         self.wait_seconds = wait_seconds
-        self.receive_message_wait_seconds = str(wait_seconds)
+        self.wait_seconds_str = str(wait_seconds)
         self.sleep_seconds = sleep_seconds
 
         sqs = boto3.resource("sqs", region_name=self.region_name)
 
-        dl_queue_attributes = {"DelaySeconds": self.delay_seconds}
+        dl_queue_attributes = {"DelaySeconds": self.delay_seconds_str}
 
         sqs.create_queue(QueueName=self.dl_queue_name, Attributes=dl_queue_attributes)
 
@@ -46,8 +47,8 @@ class Sqs:
             "maxReceiveCount": self.max_receive_count,
         }
         queue_attributes = {
-            "DelaySeconds": self.delay_seconds,
-            "ReceiveMessageWaitTimeSeconds": self.receive_message_wait_seconds,
+            "DelaySeconds": self.delay_seconds_str,
+            "ReceiveMessageWaitTimeSeconds": self.wait_seconds_str,
             "RedrivePolicy": json.dumps(redrive_policy),
         }
 
