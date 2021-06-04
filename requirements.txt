@@ -1,5 +1,5 @@
 boto3==1.9.217
-Django==2.2.4
+Django==2.2.21
 django-anymail==6.1.0
 django-dbbackup==3.2.0
 mysqlclient==1.4.4
