@@ -3,4 +3,4 @@ Django==2.2.4
 django-anymail==6.1.0
 django-dbbackup==3.2.0
 mysqlclient==1.4.4
-reportlab==3.5.23
+reportlab==3.5.55
